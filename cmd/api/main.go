@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"log"
+	"net/http"
+	"time"
+)
 
 /*
 go run :- build + executable for devlopment
@@ -11,6 +15,29 @@ Makefile :- running like command make build, make run, make clean
 
 */
 
+// go main server
 func main() {
-	fmt.Println("Olx-Api server is running!!!")
+
+	// custom router
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK) // 200
+		w.Write([]byte(`{"status": "ok"}`))
+	})
+
+	// server creation and configuration
+	server := &http.Server{
+		Addr:         ":8080",
+		Handler:      mux,
+		ReadTimeout:  10 * time.Second, // 10 sec min time to read request
+		WriteTimeout: 30 * time.Second, // 10 sec min time to write response
+		IdleTimeout:  60 * time.Second, // 10 sec min time to id
+	}
+
+	// Listening
+	if err := server.ListenAndServe(); err != nil {
+		log.Fatalf("server failed: %v\n", err) // fatalf means formated log
+	}
 }
