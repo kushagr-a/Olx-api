@@ -3,10 +3,9 @@ package main
 import (
 	"log"
 	"net/http"
-	"os"
 	"time"
 
-	"github.com/joho/godotenv"
+	"github.com/kushagra/olx-api/internal/config"
 )
 
 /*
@@ -21,16 +20,8 @@ Makefile :- running like command make build, make run, make clean
 // go main server
 func main() {
 
-	// Load the .env file (optional)
-	if err := godotenv.Load(); err != nil {
-		log.Fatalf("failed to load env file: %v", err)
-	}
-
-	// Get the port from the environment variable
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080" // default port
-	}
+	// config package
+	cfg := config.MustLoad()
 
 	// custom router
 	mux := http.NewServeMux()
@@ -43,14 +34,14 @@ func main() {
 
 	// server creation and configuration
 	server := &http.Server{
-		Addr:         ":" + port,
+		Addr:         ":" + cfg.Port,
 		Handler:      mux,
 		ReadTimeout:  10 * time.Second, // 10 sec min time to read request
 		WriteTimeout: 30 * time.Second, // 10 sec min time to write response
 		IdleTimeout:  60 * time.Second, // 10 sec min time to id
 	}
 	// print log for server start and port
-	log.Println("API is running on http://localhost:" + port)
+	log.Println("API is running on http://localhost:" + cfg.Port)
 
 	// Listening
 	if err := server.ListenAndServe(); err != nil {
