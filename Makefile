@@ -7,4 +7,4 @@ run: build
 	@./bin/api
 
 clean:
-	@rm bin/api
+	@rm bin/api 
