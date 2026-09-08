@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/kushagra/olx-api/internal/config"
+	"github.com/kushagra/olx-api/internal/handlers"
 )
 
 /*
@@ -26,11 +27,7 @@ func main() {
 	// custom router
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK) // 200
-		w.Write([]byte(`{"status": "ok"}`))
-	})
+	mux.HandleFunc("GET /healthz", handlers.Healthz)
 
 	// server creation and configuration
 	server := &http.Server{
