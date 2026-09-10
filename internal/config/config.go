@@ -7,8 +7,9 @@ import (
 
 // C :- capital means export for public
 type Config struct {
-	Port string
-	Env  string
+	Port        string
+	Env         string
+	DatabaseUrl string
 }
 
 // must pattern :- if the function fails it will panic and stop the program.
@@ -28,8 +29,14 @@ func MustLoad() Config {
 		// panic("APP_ENV required but not found in .env") :- this is used for panic
 	}
 
+	databaseUrl := os.Getenv("DATABASE_URL")
+	if databaseUrl == "" {
+		panic("DATABASE_URL required but not found in .env")
+	}
+
 	return Config{
 		Port: port,
 		Env:  env,
+		DatabaseUrl: databaseUrl,
 	}
 }

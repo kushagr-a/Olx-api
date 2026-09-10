@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/kushagra/olx-api/internal/config"
+	"github.com/kushagra/olx-api/internal/db"
 	"github.com/kushagra/olx-api/internal/handlers"
 )
 
@@ -23,6 +24,14 @@ func main() {
 
 	// config package
 	cfg := config.MustLoad()
+
+	// db connection
+	_, err := db.ConnectDb(cfg.DatabaseUrl)
+	if err != nil {
+		log.Fatalf("db connection failed: %v\n", err)
+	}
+
+	log.Println("db connected successfully")
 
 	// custom router
 	mux := http.NewServeMux()
