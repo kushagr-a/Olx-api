@@ -38,6 +38,8 @@ func main() {
 
 	mux.HandleFunc("GET /healthz", handlers.Healthz)
 
+	mux.HandleFunc("GET /listings", handlers.Listlisting)
+
 	// server creation and configuration
 	server := &http.Server{
 		Addr:         ":" + cfg.Port,
