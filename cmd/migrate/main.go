@@ -41,7 +41,7 @@ func main() {
 		}
 	case "down":
 		fmt.Println("undoing migration....!")
-		err = m.Down()
+		err = m.Steps(-1) // this steps used for down migration to previous one.
 		if err != nil {
 			log.Fatalf("error while running migration: %v", err)
 		}
