@@ -26,7 +26,7 @@ func main() {
 	cfg := config.MustLoad()
 
 	// db connection
-	_, err := db.ConnectDb(cfg.DatabaseUrl)
+	db, err := db.ConnectDb(cfg.DatabaseUrl)
 	if err != nil {
 		log.Fatalf("db connection failed: %v\n", err)
 	}
@@ -38,7 +38,7 @@ func main() {
 
 	mux.HandleFunc("GET /healthz", handlers.Healthz)
 
-	mux.HandleFunc("GET /listings", handlers.Listlisting)
+	mux.HandleFunc("GET /listings", handlers.Listlisting(db))
 
 	// server creation and configuration
 	server := &http.Server{
