@@ -18,6 +18,7 @@ type listing struct {
 }
 
 // dependency injection using wrapper function.
+// clouser factory
 func Listlisting(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		rows, err := db.Query(
